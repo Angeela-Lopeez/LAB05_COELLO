@@ -12,7 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "AdministradorController", urlPatterns = {"/sValidador", "/admin"})
+<<<<<<< HEAD
 public class AdministradorDaoCallableStatement extends HttpServlet implements AdministradorDao {
+=======
+public class AdministradorDaoCallableStatement extends HttpServlet {
+>>>>>>> origin/main
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
