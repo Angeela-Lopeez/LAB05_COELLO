@@ -14,6 +14,6 @@ public class Util {
         ERROR1 = properties.getString("error1");
         ERROR2 = properties.getString("error2");
     }
-    public static final String RUTA= "c:/tecsup/Datos.ini";
+    public static final String RUTA= "C:\\Users\\129252\\Documents\\4TO CICLO\\COELLO\\datos";
 }
 

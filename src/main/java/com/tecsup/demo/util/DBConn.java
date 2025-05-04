@@ -1,50 +1,47 @@
 package com.tecsup.demo.util;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.PropertyResourceBundle;
 
 public class DBConn {
 
-    private static String driver= null;
+    private static String driver = null;
     private static String usuario = null;
     private static String password = null;
     private static String url = null;
     static PropertyResourceBundle properties;
 
-    static{
-        try{
+    static {
+        try {
             properties = new PropertyResourceBundle(new FileInputStream(Util.RUTA));
-            url= properties.getString("URL");
-            driver= properties.getString("DRIVER");
-            usuario= properties.getString("USER");
-            password= properties.getString("PASSWORD");
+            url = properties.getString("URL");
+            driver = properties.getString("DRIVER");
+            usuario = properties.getString("USER");
+            password = properties.getString("PASSWORD");
+
+            System.out.println("Intentando conectar a: " + url);
+            System.out.println("Usuario: " + usuario);
+            System.out.println("Password: " + password);
 
             Class.forName(driver);
 
-        }
-        catch(IOException e){
-            System.out.println("Error:"+e);
-        }catch (ClassNotFoundException e) {
-            System.out.println("");
+        } catch (IOException e) {
+            System.out.println("Error de lectura del archivo de configuración: " + e);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error al cargar el driver de base de datos: " + e);
         }
     }
 
     public static Connection getConnection() {
         Connection con = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/escuela",
-                    "admin",
-                    "admin"
-            );
+            con = DriverManager.getConnection(url, usuario, password);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return con;
     }
-
 }
