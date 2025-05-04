@@ -1,54 +1,27 @@
 package com.tecsup.demo.model.entities;
 
-public class Alumno {
-    private int idAlumno;
-    private String nombre;
-    private String apellido;
-    private int edad;
-    private String correo;
+import java.util.Date;
 
-    // Constructor vacío
-    public Alumno() {
-    }
+public class Alumno {
+    private String codigo;
+    private String nombres;
+    private String apellidos;
+    private Date fechaNac;
+    private String sexo;
 
     // Getters y Setters
-    public int getIdAlumno() {
-        return idAlumno;
-    }
+    public String getCodigo() { return codigo; }
+    public void setCodigo(String codigo) { this.codigo = codigo; }
 
-    public void setIdAlumno(int idAlumno) {
-        this.idAlumno = idAlumno;
-    }
+    public String getNombres() { return nombres; }
+    public void setNombres(String nombres) { this.nombres = nombres; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getApellidos() { return apellidos; }
+    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public Date getFechaNac() { return fechaNac; }
+    public void setFechaNac(Date fechaNac) { this.fechaNac = fechaNac; }
 
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+    public String getSexo() { return sexo; }
+    public void setSexo(String sexo) { this.sexo = sexo; }
 }

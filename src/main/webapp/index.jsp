@@ -9,5 +9,7 @@
 </h1>
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
+<a href="AlumnoController?accion=listar">CRUD Alumno</a>
+
 </body>
 </html>

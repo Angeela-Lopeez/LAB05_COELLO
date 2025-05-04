@@ -1,81 +1,59 @@
 package com.tecsup.demo.controllers;
 
 import com.tecsup.demo.model.entities.Alumno;
-import com.tecsup.demo.services.AlumnoService;
 import com.tecsup.demo.services.impl.AlumnoServiceImpl;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
 import java.io.IOException;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
-@WebServlet(name = "AlumnoController", urlPatterns = {"/alumno"})
+@WebServlet("/AlumnoController")
 public class AlumnoController extends HttpServlet {
+    AlumnoServiceImpl service = new AlumnoServiceImpl();
 
-    private AlumnoService alumnoService;
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String op = req.getParameter("op");
+        try {
+            switch (op) {
+                case "listar":
+                    req.setAttribute("data", service.findAll());
+                    req.getRequestDispatcher("alumnoList.jsp").forward(req, resp);
+                    break;
+                case "nuevo":
+                    req.getRequestDispatcher("alumnoForm.jsp").forward(req, resp);
+                    break;
+                case "editar":
+                    String cod = req.getParameter("id");
+                    req.setAttribute("bean", service.find(cod));
+                    req.getRequestDispatcher("alumnoForm.jsp").forward(req, resp);
+                    break;
+                case "guardar":
+                    Alumno a = new Alumno();
+                    a.setCodigo(req.getParameter("codigo"));
+                    a.setNombres(req.getParameter("nombres"));
+                    a.setApellidos(req.getParameter("apellidos"));
+                    a.setFechaNac(new SimpleDateFormat("yyyy-MM-dd").parse(req.getParameter("fechaNac")));
+                    a.setSexo(req.getParameter("sexo"));
 
-    public AlumnoController() {
-        this.alumnoService = new AlumnoServiceImpl();
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String accion = request.getParameter("accion");
-
-        if (accion == null) {
-            // Listar todos los alumnos
-            List<Alumno> alumnos = alumnoService.findAll();
-            request.setAttribute("alumnos", alumnos);
-            request.getRequestDispatcher("alumnoMain.jsp").forward(request, response);
-        } else switch (accion) {
-            case "nuevo":
-                request.getRequestDispatcher("alumnoInsertar.jsp").forward(request, response);
-                break;
-            case "editar":
-                int id = Integer.parseInt(request.getParameter("id"));
-                Alumno alumno = alumnoService.find(id);
-                request.setAttribute("alumno", alumno);
-                request.getRequestDispatcher("alumnoActualizar.jsp").forward(request, response);
-                break;
-            case "eliminar":
-                int idEliminar = Integer.parseInt(request.getParameter("id"));
-                alumnoService.delete(idEliminar);
-                response.sendRedirect("alumno");
-                break;
-            default:
-                response.sendRedirect("alumno");
-                break;
+                    if (req.getParameter("editar") != null) {
+                        service.update(a);
+                    } else {
+                        service.create(a);
+                    }
+                    resp.sendRedirect("AlumnoController?op=listar");
+                    break;
+                case "eliminar":
+                    service.delete(req.getParameter("id"));
+                    resp.sendRedirect("AlumnoController?op=listar");
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("error", e.getMessage());
+            req.getRequestDispatcher("error.jsp").forward(req, resp);
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String accion = request.getParameter("accion");
-
-        if (accion != null) switch (accion) {
-            case "insertar":
-                Alumno nuevoAlumno = new Alumno();
-                nuevoAlumno.setNombre(request.getParameter("nombre"));
-                nuevoAlumno.setApellido(request.getParameter("apellido"));
-                nuevoAlumno.setEdad(Integer.parseInt(request.getParameter("edad")));
-                nuevoAlumno.setCorreo(request.getParameter("correo"));
-                alumnoService.create(nuevoAlumno);
-                break;
-            case "actualizar":
-                Alumno alumnoActualizar = new Alumno();
-                alumnoActualizar.setIdAlumno(Integer.parseInt(request.getParameter("id")));
-                alumnoActualizar.setNombre(request.getParameter("nombre"));
-                alumnoActualizar.setApellido(request.getParameter("apellido"));
-                alumnoActualizar.setEdad(Integer.parseInt(request.getParameter("edad")));
-                alumnoActualizar.setCorreo(request.getParameter("correo"));
-                alumnoService.update(alumnoActualizar);
-                break;
-        }
-
-        response.sendRedirect("alumno");
     }
 }

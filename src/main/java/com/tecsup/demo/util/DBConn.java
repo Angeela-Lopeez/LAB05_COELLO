@@ -8,37 +8,43 @@ import java.util.PropertyResourceBundle;
 
 public class DBConn {
 
-    private static String driver = null;
+    private static String driver= null;
     private static String usuario = null;
     private static String password = null;
     private static String url = null;
     static PropertyResourceBundle properties;
 
-    static {
-        try {
+    static{
+        try{
             properties = new PropertyResourceBundle(new FileInputStream(Util.RUTA));
-            url = properties.getString("URL");
-            driver = properties.getString("DRIVER");
-            usuario = properties.getString("USER");
-            password = properties.getString("PASSWORD");
+            url= properties.getString("URL");
+            driver= properties.getString("DRIVER");
+            usuario= properties.getString("USER");
+            password= properties.getString("PASSWORD");
 
             Class.forName(driver);
 
-        } catch (IOException e) {
-            System.out.println("Error: " + e);
-        } catch (ClassNotFoundException e) {
+        }
+        catch(IOException e){
+            System.out.println("Error:"+e);
+        }catch (ClassNotFoundException e) {
             System.out.println("");
         }
     }
 
     public static Connection getConnection() {
-        Connection connection=null;
-        try{
-            connection = DriverManager.getConnection(url,usuario,password);
+        Connection con = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/escuela",
+                    "admin",
+                    "admin"
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (SQLException e){
-            System.out.println(Util.ERROR1+e);
-        }
-        return connection;
+        return con;
     }
+
 }

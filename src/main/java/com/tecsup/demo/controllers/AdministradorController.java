@@ -16,23 +16,17 @@ public class AdministradorController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String sUsuario = request.getParameter("txtUsuario");
+        String sUsuraio = request.getParameter("txtUsuario");
         String sPassword = request.getParameter("txtPassword");
-
-        System.out.println("Controlador recibió: usuario=" + sUsuario + ", password=" + sPassword);
 
         AdministradorService servicio = new AdministradorServiceImpl();
 
-        Administrador adm = servicio.validar(sUsuario, sPassword);
+        Administrador adm = servicio.validar(sUsuraio, sPassword);
 
-        System.out.println("Resultado de validación: " + (adm != null ? "Exitoso" : "Fallido"));
-
-        if (adm != null) {
+        if(adm!=null){
             request.getSession().setAttribute("eladministrador", adm);
-            System.out.println("Redirigiendo a principal.jsp");
             response.sendRedirect("principal.jsp");
-        } else {
-            System.out.println("Redirigiendo a error.jsp");
+        }else{
             response.sendRedirect("error.jsp");
         }
     }

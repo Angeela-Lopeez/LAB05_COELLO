@@ -3,19 +3,15 @@ package com.tecsup.demo.model.daos.impl;
 import com.tecsup.demo.model.daos.AdministradorDao;
 import com.tecsup.demo.model.entities.Administrador;
 
-public class AdministradorDaoMemory implements AdministradorDao { // no usages
-
+public class AdministradorDaoMemory implements AdministradorDao {
     @Override
     public Administrador validar(String u, String p) {
-        if (u.equals("admin") && p.equals("admin")) {
-            Administrador administrador = new Administrador();
-            administrador.setLogin(u);
-            administrador.setPassword(p);
-            administrador.setNombres("angela");
-            administrador.setApellidos("lopez");
-            return administrador;
+        Administrador administrador=null;
+        if(u.equals("admin") && p.equals("admin")){
+            administrador = new Administrador();
+            administrador.setNombres("juan");
+            administrador.setApellidos("perez");
         }
-        return null;
+        return administrador;
     }
-
 }

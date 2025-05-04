@@ -1,48 +1,43 @@
 package com.tecsup.demo.model.daos.impl;
-
-import com.tecsup.demo.model.daos.AlumnoDao;
 import com.tecsup.demo.model.daos.AdministradorDao;
 import com.tecsup.demo.model.daos.CursoDao;
 import com.tecsup.demo.util.Tipo;
+import com.tecsup.demo.model.daos.AlumnoDao;
+
 
 public class DaoFactory {
 
-    public static AlumnoDao getAlumnoDao(Tipo tipo) {
-        switch (tipo) {
-            case MEMORY:
-                return new AlumnoDaoMemory();
-            case PREPARED_STATEMENT:
-                return new AlumnoDaoPreparedStatement();
-            case CALLABLE_STATEMENT:
-                return new AlumnoDaoCallableStatement();
-            default:
-                return new AlumnoDaoPreparedStatement();
-        }
-    }
-
-    public static AdministradorDao getAdministradorDao(Tipo tipo) {
-        switch (tipo) {
-            case MEMORY:
+    public static AdministradorDao getAdministradorDao(Tipo tipo){
+        switch (tipo){
+            case MEM:
                 return new AdministradorDaoMemory();
-            case PREPARED_STATEMENT:
+            case PST:
                 return new AdministradorDaoPreparedStatement();
-            case CALLABLE_STATEMENT:
+            case CST:
                 return new AdministradorDaoCallableStatement();
             default:
-                return new AdministradorDaoPreparedStatement();
+                return null;
         }
     }
 
-    public static CursoDao getCursoDao(Tipo tipo) {
-        switch (tipo) {
-            case MEMORY:
+    public static CursoDao getCursoDao(Tipo tipo){
+        switch (tipo){
+            case MEM:
                 return new CursoDaoMemory();
-            case PREPARED_STATEMENT:
+            case PST:
                 return new CursoDaoPreparedStatement();
-            case CALLABLE_STATEMENT:
-                return new CursoDaoCallableStatement();
+            case CST:
+                return new CursoDaoCallableStateMent();
             default:
-                return new CursoDaoPreparedStatement();
+                return null;
         }
     }
+
+    public static AlumnoDao getAlumnoDao() {
+        return new AlumnoDaoImpl();
+    }
+
 }
+
+
+

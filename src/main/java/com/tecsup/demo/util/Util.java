@@ -4,7 +4,7 @@ import java.util.ResourceBundle;
 
 public class Util {
 
-    public static Tipo opc;
+    public static Tipo opc ;
     public static final String ERROR1;
     public static final String ERROR2;
 
@@ -14,6 +14,6 @@ public class Util {
         ERROR1 = properties.getString("error1");
         ERROR2 = properties.getString("error2");
     }
-
-    public static final String RUTA = "c:/tecsup/Datos.ini";
+    public static final String RUTA= "c:/tecsup/Datos.ini";
 }
+

@@ -1,47 +1,38 @@
 package com.tecsup.demo.services.impl;
 
 import com.tecsup.demo.model.daos.AlumnoDao;
-import com.tecsup.demo.model.daos.impl.DaoFactory;
+import com.tecsup.demo.model.daos.impl.AlumnoDaoImpl;
 import com.tecsup.demo.model.entities.Alumno;
 import com.tecsup.demo.services.AlumnoService;
-import com.tecsup.demo.util.Tipo;
+
 import java.util.List;
 
 public class AlumnoServiceImpl implements AlumnoService {
 
-    private AlumnoDao alumnoDao;
+    private AlumnoDao dao = new AlumnoDaoImpl();
 
-    public AlumnoServiceImpl() {
-        this.alumnoDao = DaoFactory.getAlumnoDao(Tipo.PREPARED_STATEMENT);
+    @Override
+    public void create(Alumno alumno) throws Exception {
+        dao.create(alumno);
     }
 
     @Override
-    public void create(Alumno alumno) {
-        alumnoDao.create(alumno);
+    public void update(Alumno alumno) throws Exception {
+        dao.update(alumno);
     }
 
     @Override
-    public Alumno find(Integer id) {
-        return alumnoDao.find(id);
+    public void delete(String codigo) throws Exception {
+        dao.delete(codigo);
     }
 
     @Override
-    public List<Alumno> findAll() {
-        return alumnoDao.findAll();
+    public Alumno find(String codigo) throws Exception {
+        return dao.find(codigo);
     }
 
     @Override
-    public void update(Alumno alumno) {
-        alumnoDao.update(alumno);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        alumnoDao.delete(id);
-    }
-
-    @Override
-    public List<Alumno> buscarPorNombre(String nombre) {
-        return alumnoDao.buscarPorNombre(nombre);
+    public List<Alumno> findAll() throws Exception {
+        return dao.findAll();
     }
 }

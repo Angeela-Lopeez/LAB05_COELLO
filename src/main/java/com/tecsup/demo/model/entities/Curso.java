@@ -1,19 +1,27 @@
 package com.tecsup.demo.model.entities;
 
 public class Curso {
-    private int id;
+    private String codigo;
     private String nombre;
     private int creditos;
 
     public Curso() {
     }
 
-    public int getId() {
-        return id;
+    public Curso(String codigo, String nombre, int creditos) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.creditos = creditos;
     }
 
-    public void setId(int id) {
-        this.id = id;
+
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -31,4 +39,11 @@ public class Curso {
     public void setCreditos(int creditos) {
         this.creditos = creditos;
     }
+
+    @Override
+    public String toString() {
+        return "Curso{" + "codigo=" + codigo + ", nombre=" + nombre + ", creditos=" + creditos + '}';
+    }
+
+
 }

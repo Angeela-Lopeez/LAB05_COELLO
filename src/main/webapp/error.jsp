@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h1>::::::::::sistema intranet ::::::::::!</h1>
+<h1>::::::::::sistema intranet ::::::::!</h1>
 <h1>::::::::::error de credenciales!!!!!!!!!! ::::::::!</h1>
 </body>
 </html>

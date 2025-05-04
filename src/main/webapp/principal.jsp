@@ -1,5 +1,5 @@
 <%@ page import="com.tecsup.demo.model.entities.Administrador" %>
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <%
@@ -17,10 +17,8 @@
 <body>
 <jsp:include page="master.jsp" />
 
-<h2><a href="cursoMan.jsp">Mantenimiento de cursos</a></h2>
-<a href="alumno" class="btn btn-primary">Gestionar Alumnos</a>
+<h2><a href="cursoMan.jsp">Mantenimiento de cursos</a> </h2>
+
 </body>
-<%
-    }
-%>
+<% } %>
 </html>
