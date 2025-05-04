@@ -1,48 +1,48 @@
 package com.tecsup.demo.model.daos.impl;
 
-import com.tecsup.demo.model.daos.AdministradorDao;
 import com.tecsup.demo.model.daos.AlumnoDao;
+import com.tecsup.demo.model.daos.AdministradorDao;
 import com.tecsup.demo.model.daos.CursoDao;
 import com.tecsup.demo.util.Tipo;
 
 public class DaoFactory {
 
+    public static AlumnoDao getAlumnoDao(Tipo tipo) {
+        switch (tipo) {
+            case MEMORY:
+                return new AlumnoDaoMemory();
+            case PREPARED_STATEMENT:
+                return new AlumnoDaoPreparedStatement();
+            case CALLABLE_STATEMENT:
+                return new AlumnoDaoCallableStatement();
+            default:
+                return new AlumnoDaoPreparedStatement();
+        }
+    }
+
     public static AdministradorDao getAdministradorDao(Tipo tipo) {
         switch (tipo) {
-            case MEM:
+            case MEMORY:
                 return new AdministradorDaoMemory();
-            case PST:
+            case PREPARED_STATEMENT:
                 return new AdministradorDaoPreparedStatement();
-            case CST:
+            case CALLABLE_STATEMENT:
                 return new AdministradorDaoCallableStatement();
             default:
-                return null;
+                return new AdministradorDaoPreparedStatement();
         }
     }
 
     public static CursoDao getCursoDao(Tipo tipo) {
         switch (tipo) {
-            case MEM:
+            case MEMORY:
                 return new CursoDaoMemory();
-            case PST:
+            case PREPARED_STATEMENT:
                 return new CursoDaoPreparedStatement();
-            case CST:
+            case CALLABLE_STATEMENT:
                 return new CursoDaoCallableStatement();
             default:
-                return null;
-        }
-    }
-
-    public static AlumnoDao getAlumnoDao(Tipo tipo) {
-        switch (tipo) {
-            case MEM:
-                return new AlumnoDaoMemory();
-            case PST:
-                return new AlumnoDaoPreparedStatement();
-            case CST:
-                return new AlumnoDaoCallableStatement();
-            default:
-                return null;
+                return new CursoDaoPreparedStatement();
         }
     }
 }

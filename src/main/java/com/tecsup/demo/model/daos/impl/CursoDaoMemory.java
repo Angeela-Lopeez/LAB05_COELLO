@@ -3,76 +3,37 @@ package com.tecsup.demo.model.daos.impl;
 import com.tecsup.demo.model.daos.CursoDao;
 import com.tecsup.demo.model.entities.Curso;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CursoDaoMemory implements CursoDao {
-    private static List<Curso> listaDeCursos;
-
-    public CursoDaoMemory() {
-        listaDeCursos = new ArrayList<>();
-        /*
-        listaDeCursos = List.of(
-            new Curso("100", "Programmer", 3),
-            new Curso("200", "Developer", 4),
-            new Curso("300", "Expert", 5)
-        );
-        */
-    }
+    private static final Map<Integer, Curso> cursos = new HashMap<>();
+    private static int secuencia = 1;
 
     @Override
     public void create(Curso curso) {
-        listaDeCursos.add(curso);
+        curso.setId(secuencia++);
+        cursos.put(curso.getId(), curso);
     }
 
     @Override
-    public Curso find(String id) {
-        for (Curso curso : listaDeCursos) {
-            if (curso.getCodigo().equals(id)) {
-                return curso;
-            }
-        }
-        return null;
+    public Curso find(Integer id) {
+        return cursos.get(id);
     }
 
     @Override
     public List<Curso> findAll() {
-        return listaDeCursos;
+        return new ArrayList<>(cursos.values());
     }
 
     @Override
     public void update(Curso curso) {
-        for (Curso c : listaDeCursos) {
-            if (c.getCodigo().equals(curso.getCodigo())) {
-                c.setNombre(curso.getNombre());
-                c.setCreditos(curso.getCreditos());
-            }
-        }
+        cursos.put(curso.getId(), curso);
     }
 
     @Override
-    public void delete(String id) {
-        listaDeCursos.removeIf(curso -> curso.getCodigo().equals(id));
-    }
-
-    @Override
-    public List<Curso> findByRangeCreditos(int min, int max) {
-        List<Curso> cursos = new ArrayList<>();
-        listaDeCursos.forEach(curso -> {
-            if (curso.getCreditos() >= min && curso.getCreditos() <= max) {
-                cursos.add(curso);
-            }
-        });
-        return cursos;
-    }
-
-    @Override
-    public List<Curso> findByNombre(String nombre) {
-        List<Curso> cursos = new ArrayList<>();
-        listaDeCursos.forEach(curso -> {
-            if (curso.getNombre().contains(nombre)) {
-                cursos.add(curso);
-            }
-        });
-        return cursos;
+    public void delete(Integer id) {
+        cursos.remove(id);
     }
 }

@@ -9,28 +9,69 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet(name = "CursoController", urlPatterns = {"/cController", "/sCurso", "/cursoController"})
+@WebServlet(name = "CursoController", urlPatterns = {"/curso"})
 public class CursoController extends HttpServlet {
 
-    @Override // no usages
+    private CursoService cursoService;
+
+    public CursoController() {
+        this.cursoService = new CursoServiceImpl();
+    }
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        Curso curso = new Curso();
-        curso.setCodigo(request.getParameter("txtCodigo"));
-        curso.setNombre(request.getParameter("txtNombre"));
-        curso.setCreditos(Integer.parseInt(request.getParameter("txtCreditos")));
-
-        System.out.println(curso);
-        CursoService servicio = new CursoServiceImpl();
-
         String accion = request.getParameter("accion");
-        switch (accion) {
-            case "insertar": servicio.grabar(curso); break;
-            case "actualizar": servicio.actualizar(curso); break;
-            case "eliminar": servicio.borrar(curso.getCodigo()); break;
+
+        if (accion == null) {
+            // Listar todos los cursos
+            List<Curso> cursos = cursoService.findAll();
+            request.setAttribute("cursos", cursos);
+            request.getRequestDispatcher("cursoMain.jsp").forward(request, response);
+        } else switch (accion) {
+            case "nuevo":
+                request.getRequestDispatcher("cursoInsertar.jsp").forward(request, response);
+                break;
+            case "editar":
+                int id = Integer.parseInt(request.getParameter("id"));
+                Curso curso = cursoService.find(id);
+                request.setAttribute("curso", curso);
+                request.getRequestDispatcher("cursoActualizar.jsp").forward(request, response);
+                break;
+            case "eliminar":
+                int idEliminar = Integer.parseInt(request.getParameter("id"));
+                cursoService.delete(idEliminar);
+                response.sendRedirect("curso");
+                break;
+            default:
+                response.sendRedirect("curso");
+                break;
         }
-        response.sendRedirect("cursoMan.jsp");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+
+        if (accion != null) switch (accion) {
+            case "insertar":
+                Curso nuevoCurso = new Curso();
+                nuevoCurso.setNombre(request.getParameter("nombre"));
+                nuevoCurso.setCreditos(Integer.parseInt(request.getParameter("creditos")));
+                cursoService.create(nuevoCurso);
+                break;
+            case "actualizar":
+                Curso cursoActualizar = new Curso();
+                cursoActualizar.setId(Integer.parseInt(request.getParameter("id")));
+                cursoActualizar.setNombre(request.getParameter("nombre"));
+                cursoActualizar.setCreditos(Integer.parseInt(request.getParameter("creditos")));
+                cursoService.update(cursoActualizar);
+                break;
+        }
+
+        response.sendRedirect("curso");
     }
 }

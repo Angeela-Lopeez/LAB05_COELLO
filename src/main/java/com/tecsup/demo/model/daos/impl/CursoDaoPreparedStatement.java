@@ -3,103 +3,41 @@ package com.tecsup.demo.model.daos.impl;
 import com.tecsup.demo.model.daos.CursoDao;
 import com.tecsup.demo.model.entities.Curso;
 import com.tecsup.demo.util.DBConn;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CursoDaoPreparedStatement implements CursoDao {
+    private Connection conn;
 
-    @Override
-    public List<Curso> findByRangeCreditos(int min, int max) {
-        List<Curso> cursos = new ArrayList<>();
-        String query = "SELECT * FROM curso WHERE intCurCreditos BETWEEN ? AND ?";
-        try (Connection con = DBConn.getConnection();
-             PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setInt(1, min);
-            pst.setInt(2, max);
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    Curso curso = new Curso(
-                            rs.getString("chrCurCodigo"),
-                            rs.getString("vchCurNombre"),
-                            rs.getInt("intCurCreditos")
-                    );
-                    cursos.add(curso);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return cursos;
-    }
-
-    @Override
-    public List<Curso> findByNombre(String nombre) {
-        List<Curso> cursos = new ArrayList<>();
-        String query = "SELECT * FROM curso WHERE vchCurNombre LIKE ?";
-        try (Connection con = DBConn.getConnection();
-             PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setString(1, "%" + nombre + "%");
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    Curso curso = new Curso(
-                            rs.getString("chrCurCodigo"),
-                            rs.getString("vchCurNombre"),
-                            rs.getInt("intCurCreditos")
-                    );
-                    cursos.add(curso);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return cursos;
-    }
-
-    @Override
-    public void delete(String id) {
-        String query = "DELETE FROM curso WHERE chrCurCodigo = ?";
-        try (Connection con = DBConn.getConnection();
-             PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setString(1, id);
-            pst.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar curso: " + e.getMessage());
-        }
+    public CursoDaoPreparedStatement() {
+        this.conn = DBConn.getConnection();
     }
 
     @Override
     public void create(Curso curso) {
-        String query = "INSERT INTO curso (chrCurCodigo, vchCurNombre, intCurCreditos) VALUES (?, ?, ?)";
-        try (Connection con = DBConn.getConnection();
-             PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setString(1, curso.getCodigo());
-            pst.setString(2, curso.getNombre());
-            pst.setInt(3, curso.getCreditos());
-            pst.executeUpdate();
+        String sql = "INSERT INTO cursos (nombre, creditos) VALUES (?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, curso.getNombre());
+            stmt.setInt(2, curso.getCreditos());
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public Curso find(String id) {
+    public Curso find(Integer id) {
+        String sql = "SELECT * FROM cursos WHERE id = ?";
         Curso curso = null;
-        String query = "SELECT * FROM curso WHERE chrCurCodigo = ?";
-        try (Connection con = DBConn.getConnection();
-             PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setString(1, id);
-            try (ResultSet rs = pst.executeQuery()) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    curso = new Curso(
-                            rs.getString("chrCurCodigo"),
-                            rs.getString("vchCurNombre"),
-                            rs.getInt("intCurCreditos")
-                    );
+                    curso = new Curso();
+                    curso.setId(rs.getInt("id"));
+                    curso.setNombre(rs.getString("nombre"));
+                    curso.setCreditos(rs.getInt("creditos"));
                 }
             }
         } catch (SQLException e) {
@@ -111,16 +49,14 @@ public class CursoDaoPreparedStatement implements CursoDao {
     @Override
     public List<Curso> findAll() {
         List<Curso> cursos = new ArrayList<>();
-        String query = "SELECT * FROM curso";
-        try (Connection con = DBConn.getConnection();
-             PreparedStatement pst = con.prepareStatement(query);
-             ResultSet rs = pst.executeQuery()) {
+        String sql = "SELECT * FROM cursos";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Curso curso = new Curso(
-                        rs.getString("chrCurCodigo"),
-                        rs.getString("vchCurNombre"),
-                        rs.getInt("intCurCreditos")
-                );
+                Curso curso = new Curso();
+                curso.setId(rs.getInt("id"));
+                curso.setNombre(rs.getString("nombre"));
+                curso.setCreditos(rs.getInt("creditos"));
                 cursos.add(curso);
             }
         } catch (SQLException e) {
@@ -129,16 +65,25 @@ public class CursoDaoPreparedStatement implements CursoDao {
         return cursos;
     }
 
-    // Implementación del método update que falta
     @Override
     public void update(Curso curso) {
-        String query = "UPDATE curso SET vchCurNombre = ?, intCurCreditos = ? WHERE chrCurCodigo = ?";
-        try (Connection con = DBConn.getConnection();
-             PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setString(1, curso.getNombre());
-            pst.setInt(2, curso.getCreditos());
-            pst.setString(3, curso.getCodigo());
-            pst.executeUpdate();
+        String sql = "UPDATE cursos SET nombre=?, creditos=? WHERE id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, curso.getNombre());
+            stmt.setInt(2, curso.getCreditos());
+            stmt.setInt(3, curso.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(Integer id) {
+        String sql = "DELETE FROM cursos WHERE id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

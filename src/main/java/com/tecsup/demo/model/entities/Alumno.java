@@ -1,96 +1,54 @@
 package com.tecsup.demo.model.entities;
 
-import java.io.Serializable;
+public class Alumno {
+    private int idAlumno;
+    private String nombre;
+    private String apellido;
+    private int edad;
+    private String correo;
 
-public class Alumno implements Serializable {
-
-    private String codigo;
-    private String nombres;
-    private String apellidos;
-    private String dni;
-    private String direccion;
-    private String telefono;
-    private String email;
-
+    // Constructor vacío
     public Alumno() {
     }
 
-    public Alumno(String codigo, String nombres, String apellidos, String dni, String direccion, String telefono, String email) {
-        this.codigo = codigo;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.dni = dni;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.email = email;
+    // Getters y Setters
+    public int getIdAlumno() {
+        return idAlumno;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public void setIdAlumno(int idAlumno) {
+        this.idAlumno = idAlumno;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public String getNombre() {
+        return nombre;
     }
 
-    public String getNombres() {
-        return nombres;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
+    public String getApellido() {
+        return apellido;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public int getEdad() {
+        return edad;
     }
 
-    public String getDni() {
-        return dni;
+    public void setEdad(int edad) {
+        this.edad = edad;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public String getCorreo() {
+        return correo;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "Alumno [" +
-                "codigo='" + codigo + '\'' +
-                ", nombres='" + nombres + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", dni='" + dni + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", email='" + email + '\'' +
-                ']';
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 }

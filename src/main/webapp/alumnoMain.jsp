@@ -1,14 +1,10 @@
-<%@ page import="com.tecsup.demo.model.entities.Administrador" %>
-<%@page import="com.tecsup.demo.services.CursoService"%>
-<%@page import="com.tecsup.demo.services.impl.CursoServiceImpl"%>
-<%@page import="com.tecsup.demo.model.entities.Curso"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Gestión de Cursos</title>
+    <title>Gestión de Alumnos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -17,8 +13,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Lista de Cursos</h4>
-                    <a href="curso?accion=nuevo" class="btn btn-primary">Nuevo Curso</a>
+                    <h4>Lista de Alumnos</h4>
+                    <a href="alumno?accion=nuevo" class="btn btn-primary">Nuevo Alumno</a>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -26,19 +22,23 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Créditos</th>
+                            <th>Apellido</th>
+                            <th>Edad</th>
+                            <th>Correo</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="curso" items="${cursos}">
+                        <c:forEach var="alumno" items="${alumnos}">
                             <tr>
-                                <td>${curso.id}</td>
-                                <td>${curso.nombre}</td>
-                                <td>${curso.creditos}</td>
+                                <td>${alumno.idAlumno}</td>
+                                <td>${alumno.nombre}</td>
+                                <td>${alumno.apellido}</td>
+                                <td>${alumno.edad}</td>
+                                <td>${alumno.correo}</td>
                                 <td>
-                                    <a href="curso?accion=editar&id=${curso.id}" class="btn btn-warning btn-sm">Editar</a>
-                                    <a href="curso?accion=eliminar&id=${curso.id}" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este curso?')">Eliminar</a>
+                                    <a href="alumno?accion=editar&id=${alumno.idAlumno}" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="alumno?accion=eliminar&id=${alumno.idAlumno}" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este registro?')">Eliminar</a>
                                 </td>
                             </tr>
                         </c:forEach>

@@ -3,56 +3,49 @@ package com.tecsup.demo.model.daos.impl;
 import com.tecsup.demo.model.daos.AlumnoDao;
 import com.tecsup.demo.model.entities.Alumno;
 import com.tecsup.demo.util.DBConn;
-
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlumnoDaoCallableStatement implements AlumnoDao {
 
-    private ResultSet rs;
+    private Connection conn;
+
+    public AlumnoDaoCallableStatement() {
+        this.conn = DBConn.getConnection();
+    }
 
     @Override
     public void create(Alumno alumno) {
-        try (Connection con = DBConn.getConnection();
-             CallableStatement cst = con.prepareCall("{call sp_ins_alumno(?, ?, ?, ?, ?, ?, ?)}")) {
-            cst.setString(1, alumno.getCodigo());
-            cst.setString(2, alumno.getNombres());
-            cst.setString(3, alumno.getApellidos());
-            cst.setString(4, alumno.getDni());
-            cst.setString(5, alumno.getDireccion());
-            cst.setString(6, alumno.getTelefono());
-            cst.setString(7, alumno.getEmail());
-            cst.executeUpdate();
+        String sql = "{call sp_insertar_alumno(?, ?, ?, ?)}";
+        try (CallableStatement stmt = conn.prepareCall(sql)) {
+            stmt.setString(1, alumno.getNombre());
+            stmt.setString(2, alumno.getApellido());
+            stmt.setInt(3, alumno.getEdad());
+            stmt.setString(4, alumno.getCorreo());
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error al crear alumno: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     @Override
-    public Alumno find(String id) {
+    public Alumno find(Integer id) {
+        String sql = "{call sp_obtener_alumno_por_id(?)}";
         Alumno alumno = null;
-        try (Connection con = DBConn.getConnection();
-             CallableStatement cst = con.prepareCall("{call sp_find_alumno(?)}")) {
-            cst.setString(1, id);
-            rs = cst.executeQuery();
-            if (rs.next()) {
-                alumno = new Alumno(
-                        rs.getString("chrAluCodigo"),
-                        rs.getString("vchAluNombres"),
-                        rs.getString("vchAluApellidos"),
-                        rs.getString("chrAluDni"),
-                        rs.getString("vchAluDireccion"),
-                        rs.getString("chrAluTelefono"),
-                        rs.getString("vchAluEmail")
-                );
+        try (CallableStatement stmt = conn.prepareCall(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    alumno = new Alumno();
+                    alumno.setIdAlumno(rs.getInt("id_alumno"));
+                    alumno.setNombre(rs.getString("nombre"));
+                    alumno.setApellido(rs.getString("apellido"));
+                    alumno.setEdad(rs.getInt("edad"));
+                    alumno.setCorreo(rs.getString("correo"));
+                }
             }
         } catch (SQLException e) {
-            System.out.println("Error al buscar alumno: " + e.getMessage());
             e.printStackTrace();
         }
         return alumno;
@@ -61,23 +54,19 @@ public class AlumnoDaoCallableStatement implements AlumnoDao {
     @Override
     public List<Alumno> findAll() {
         List<Alumno> alumnos = new ArrayList<>();
-        try (Connection con = DBConn.getConnection();
-             CallableStatement cst = con.prepareCall("{call sp_findAll_alumno()}")) {
-            rs = cst.executeQuery();
+        String sql = "{call sp_listar_alumnos()}";
+        try (CallableStatement stmt = conn.prepareCall(sql);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Alumno alumno = new Alumno(
-                        rs.getString("chrAluCodigo"),
-                        rs.getString("vchAluNombres"),
-                        rs.getString("vchAluApellidos"),
-                        rs.getString("chrAluDni"),
-                        rs.getString("vchAluDireccion"),
-                        rs.getString("chrAluTelefono"),
-                        rs.getString("vchAluEmail")
-                );
+                Alumno alumno = new Alumno();
+                alumno.setIdAlumno(rs.getInt("id_alumno"));
+                alumno.setNombre(rs.getString("nombre"));
+                alumno.setApellido(rs.getString("apellido"));
+                alumno.setEdad(rs.getInt("edad"));
+                alumno.setCorreo(rs.getString("correo"));
                 alumnos.add(alumno);
             }
         } catch (SQLException e) {
-            System.out.println("Error al listar alumnos: " + e.getMessage());
             e.printStackTrace();
         }
         return alumnos;
@@ -85,108 +74,50 @@ public class AlumnoDaoCallableStatement implements AlumnoDao {
 
     @Override
     public void update(Alumno alumno) {
-        try (Connection con = DBConn.getConnection();
-             CallableStatement cst = con.prepareCall("{call sp_upd_alumno(?, ?, ?, ?, ?, ?, ?)}")) {
-            cst.setString(1, alumno.getCodigo());
-            cst.setString(2, alumno.getNombres());
-            cst.setString(3, alumno.getApellidos());
-            cst.setString(4, alumno.getDni());
-            cst.setString(5, alumno.getDireccion());
-            cst.setString(6, alumno.getTelefono());
-            cst.setString(7, alumno.getEmail());
-            cst.executeUpdate();
+        String sql = "{call sp_actualizar_alumno(?, ?, ?, ?, ?)}";
+        try (CallableStatement stmt = conn.prepareCall(sql)) {
+            stmt.setInt(1, alumno.getIdAlumno());
+            stmt.setString(2, alumno.getNombre());
+            stmt.setString(3, alumno.getApellido());
+            stmt.setInt(4, alumno.getEdad());
+            stmt.setString(5, alumno.getCorreo());
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error al actualizar alumno: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     @Override
-    public void delete(String id) {
-        try (Connection con = DBConn.getConnection();
-             CallableStatement cst = con.prepareCall("{call sp_del_alumno(?)}")) {
-            cst.setString(1, id);
-            cst.executeUpdate();
+    public void delete(Integer id) {
+        String sql = "{call sp_eliminar_alumno(?)}";
+        try (CallableStatement stmt = conn.prepareCall(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error al eliminar alumno: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    @Override
-    public List<Alumno> findByNombre(String nombre) {
+    // Implementación del método adicional
+    public List<Alumno> buscarPorNombre(String nombre) {
         List<Alumno> alumnos = new ArrayList<>();
-        try (Connection con = DBConn.getConnection();
-             CallableStatement cst = con.prepareCall("{call sp_find_alumno_nombre(?)}")) {
-            cst.setString(1, "%" + nombre + "%");
-            rs = cst.executeQuery();
-            while (rs.next()) {
-                Alumno alumno = new Alumno(
-                        rs.getString("chrAluCodigo"),
-                        rs.getString("vchAluNombres"),
-                        rs.getString("vchAluApellidos"),
-                        rs.getString("chrAluDni"),
-                        rs.getString("vchAluDireccion"),
-                        rs.getString("chrAluTelefono"),
-                        rs.getString("vchAluEmail")
-                );
-                alumnos.add(alumno);
+        String sql = "{call sp_buscar_alumnos_por_nombre(?)}";
+        try (CallableStatement stmt = conn.prepareCall(sql)) {
+            stmt.setString(1, nombre);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Alumno alumno = new Alumno();
+                    alumno.setIdAlumno(rs.getInt("id_alumno"));
+                    alumno.setNombre(rs.getString("nombre"));
+                    alumno.setApellido(rs.getString("apellido"));
+                    alumno.setEdad(rs.getInt("edad"));
+                    alumno.setCorreo(rs.getString("correo"));
+                    alumnos.add(alumno);
+                }
             }
         } catch (SQLException e) {
-            System.out.println("Error en búsqueda por nombre: " + e.getMessage());
             e.printStackTrace();
         }
         return alumnos;
-    }
-
-    @Override
-    public List<Alumno> findByApellido(String apellido) {
-        List<Alumno> alumnos = new ArrayList<>();
-        try (Connection con = DBConn.getConnection();
-             CallableStatement cst = con.prepareCall("{call sp_find_alumno_apellido(?)}")) {
-            cst.setString(1, "%" + apellido + "%");
-            rs = cst.executeQuery();
-            while (rs.next()) {
-                Alumno alumno = new Alumno(
-                        rs.getString("chrAluCodigo"),
-                        rs.getString("vchAluNombres"),
-                        rs.getString("vchAluApellidos"),
-                        rs.getString("chrAluDni"),
-                        rs.getString("vchAluDireccion"),
-                        rs.getString("chrAluTelefono"),
-                        rs.getString("vchAluEmail")
-                );
-                alumnos.add(alumno);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error en búsqueda por apellido: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return alumnos;
-    }
-
-    @Override
-    public Alumno findByDni(String dni) {
-        Alumno alumno = null;
-        try (Connection con = DBConn.getConnection();
-             CallableStatement cst = con.prepareCall("{call sp_find_alumno_dni(?)}")) {
-            cst.setString(1, dni);
-            rs = cst.executeQuery();
-            if (rs.next()) {
-                alumno = new Alumno(
-                        rs.getString("chrAluCodigo"),
-                        rs.getString("vchAluNombres"),
-                        rs.getString("vchAluApellidos"),
-                        rs.getString("chrAluDni"),
-                        rs.getString("vchAluDireccion"),
-                        rs.getString("chrAluTelefono"),
-                        rs.getString("vchAluEmail")
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Error en búsqueda por DNI: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return alumno;
     }
 }

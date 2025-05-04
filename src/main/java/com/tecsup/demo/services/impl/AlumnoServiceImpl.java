@@ -4,42 +4,44 @@ import com.tecsup.demo.model.daos.AlumnoDao;
 import com.tecsup.demo.model.daos.impl.DaoFactory;
 import com.tecsup.demo.model.entities.Alumno;
 import com.tecsup.demo.services.AlumnoService;
-import com.tecsup.demo.util.Util;
-
+import com.tecsup.demo.util.Tipo;
 import java.util.List;
 
 public class AlumnoServiceImpl implements AlumnoService {
 
-    private AlumnoDao dao;
+    private AlumnoDao alumnoDao;
 
     public AlumnoServiceImpl() {
-        dao = DaoFactory.getAlumnoDao(Util.opc);
+        this.alumnoDao = DaoFactory.getAlumnoDao(Tipo.PREPARED_STATEMENT);
     }
 
     @Override
-    public void grabar(Alumno alumno) {
-        dao.create(alumno);
+    public void create(Alumno alumno) {
+        alumnoDao.create(alumno);
     }
 
     @Override
-    public Alumno buscar(String id) {
-        return dao.find(id);
+    public Alumno find(Integer id) {
+        return alumnoDao.find(id);
     }
 
     @Override
-    public List<Alumno> listar() {
-        return dao.findAll();
+    public List<Alumno> findAll() {
+        return alumnoDao.findAll();
     }
 
     @Override
-    public void actualizar(Alumno alumno) {
-        dao.update(alumno);
+    public void update(Alumno alumno) {
+        alumnoDao.update(alumno);
     }
 
     @Override
-    public void borrar(String id) {
-        dao.delete(id);
+    public void delete(Integer id) {
+        alumnoDao.delete(id);
     }
 
     @Override
-    public List<Alumno> bus
+    public List<Alumno> buscarPorNombre(String nombre) {
+        return alumnoDao.buscarPorNombre(nombre);
+    }
+}

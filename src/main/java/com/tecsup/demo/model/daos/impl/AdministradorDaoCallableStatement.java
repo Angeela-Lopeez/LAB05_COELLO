@@ -1,50 +1,40 @@
-
 package com.tecsup.demo.model.daos.impl;
+
 import com.tecsup.demo.model.daos.AdministradorDao;
 import com.tecsup.demo.model.entities.Administrador;
-import com.tecsup.demo.services.AdministradorService;
-import com.tecsup.demo.services.impl.AdministradorServiceImpl;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import com.tecsup.demo.util.DBConn;
+import java.sql.*;
 
-@WebServlet(name = "AdministradorController", urlPatterns = {"/sValidador", "/admin"})
-<<<<<<< HEAD
-public class AdministradorDaoCallableStatement extends HttpServlet implements AdministradorDao {
-=======
-public class AdministradorDaoCallableStatement extends HttpServlet {
->>>>>>> origin/main
+public class AdministradorDaoCallableStatement implements AdministradorDao {
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String sUsuario = request.getParameter("txtUsuario");
-        String sPassword = request.getParameter("txtPassword");
+    private Connection conn;
 
-        System.out.println("Controlador recibió: usuario=" + sUsuario + ", password=" + sPassword);
-
-        AdministradorService servicio = new AdministradorServiceImpl();
-
-        Administrador adm = servicio.validar(sUsuario, sPassword);
-
-        System.out.println("Resultado de validación: " + (adm != null ? "Exitoso" : "Fallido"));
-
-        if (adm != null) {
-            request.getSession().setAttribute("eladministrador", adm);
-            System.out.println("Redirigiendo a principal.jsp");
-            response.sendRedirect("principal.jsp");
-        } else {
-            System.out.println("Redirigiendo a error.jsp");
-            response.sendRedirect("error.jsp");
-        }
+    public AdministradorDaoCallableStatement() {
+        this.conn = DBConn.getConnection();
     }
+
     @Override
     public Administrador validar(String user, String password) {
-        AdministradorService servicio = new AdministradorServiceImpl();
-        return servicio.validar(user, password);
-    }
+        String sql = "{call sp_validar_administrador(?, ?)}";
+        Administrador admin = null;
 
+        try (CallableStatement stmt = conn.prepareCall(sql)) {
+            stmt.setString(1, user);
+            stmt.setString(2, password);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    admin = new Administrador();
+                    admin.setCodigo(rs.getString("id_administrador"));
+                    admin.setLogin(rs.getString("usuario"));
+                    admin.setPassword(rs.getString("password"));
+                    admin.setNombres(rs.getString("nombre"));
+                    admin.setApellidos(rs.getString("apellido"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return admin;
+    }
 }

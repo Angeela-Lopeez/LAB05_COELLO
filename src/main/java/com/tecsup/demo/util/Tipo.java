@@ -1,5 +1,7 @@
 package com.tecsup.demo.util;
 
 public enum Tipo {
-    MEM, PST, CST
+    MEMORY,
+    PREPARED_STATEMENT,
+    CALLABLE_STATEMENT
 }

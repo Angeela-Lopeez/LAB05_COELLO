@@ -18,7 +18,7 @@
 <jsp:include page="master.jsp" />
 
 <h2><a href="cursoMan.jsp">Mantenimiento de cursos</a></h2>
-
+<a href="alumno" class="btn btn-primary">Gestionar Alumnos</a>
 </body>
 <%
     }

@@ -4,46 +4,39 @@ import com.tecsup.demo.model.daos.CursoDao;
 import com.tecsup.demo.model.daos.impl.DaoFactory;
 import com.tecsup.demo.model.entities.Curso;
 import com.tecsup.demo.services.CursoService;
-import com.tecsup.demo.util.Util;
-
+import com.tecsup.demo.util.Tipo;
 import java.util.List;
 
 public class CursoServiceImpl implements CursoService {
 
-    private CursoDao dao;
+    private CursoDao cursoDao;
 
     public CursoServiceImpl() {
-        dao = DaoFactory.getCursoDao(Util.opc);
+        this.cursoDao = DaoFactory.getCursoDao(Tipo.PREPARED_STATEMENT);
     }
 
     @Override
-    public void grabar(Curso curso) {
-        dao.create(curso);
+    public void create(Curso curso) {
+        cursoDao.create(curso);
     }
 
     @Override
-    public Curso buscar(String id) {
-        return dao.find(id);
+    public Curso find(Integer id) {
+        return cursoDao.find(id);
     }
 
     @Override
-    public List<Curso> listar() {
-        return dao.findAll();
+    public List<Curso> findAll() {
+        return cursoDao.findAll();
     }
 
     @Override
-    public void actualizar(Curso curso) {
-        dao.update(curso);
+    public void update(Curso curso) {
+        cursoDao.update(curso);
     }
 
     @Override
-    public void borrar(String id) {
-        dao.delete(id);
-    }
-
-    // Aquí cambiamos 'filterByCreditos' a 'fitterByCreditos' para que coincida con la interfaz.
-    @Override
-    public List<Curso> fitterByCreditos(int min, int max) {
-        return dao.findByRangeCreditos(min, max);
+    public void delete(Integer id) {
+        cursoDao.delete(id);
     }
 }

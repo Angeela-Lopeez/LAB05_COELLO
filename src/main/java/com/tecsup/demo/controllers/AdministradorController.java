@@ -13,20 +13,26 @@ import java.io.IOException;
 @WebServlet(name = "AdministradorController", urlPatterns = {"/sValidador", "/admin"})
 public class AdministradorController extends HttpServlet {
 
-    @Override // no usages
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String sUsuario = request.getParameter("txtUsuario");
         String sPassword = request.getParameter("txtPassword");
 
+        System.out.println("Controlador recibió: usuario=" + sUsuario + ", password=" + sPassword);
+
         AdministradorService servicio = new AdministradorServiceImpl();
 
         Administrador adm = servicio.validar(sUsuario, sPassword);
 
+        System.out.println("Resultado de validación: " + (adm != null ? "Exitoso" : "Fallido"));
+
         if (adm != null) {
             request.getSession().setAttribute("eladministrador", adm);
+            System.out.println("Redirigiendo a principal.jsp");
             response.sendRedirect("principal.jsp");
         } else {
+            System.out.println("Redirigiendo a error.jsp");
             response.sendRedirect("error.jsp");
         }
     }

@@ -2,57 +2,40 @@
 <%@ page import="com.tecsup.demo.model.entities.Curso" %>
 <%@ page import="com.tecsup.demo.services.CursoService" %>
 <%@ page import="com.tecsup.demo.services.impl.CursoServiceImpl" %>
-<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<%
-    HttpSession misesion = request.getSession();
-    if (misesion.getAttribute("eladministrador") == null) {
-        response.sendRedirect("error.jsp");
-    } else {
-        Administrador adm = (Administrador) misesion.getAttribute("eladministrador");
-        String nombre = adm.getNombres() + " " + adm.getApellidos();
-        String sid = request.getParameter("id");
-        CursoService servicio = new CursoServiceImpl();
-        Curso curso = servicio.buscar(sid);
-%>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Actualizar Curso - <%= nombre %></title>
+    <title>Actualizar Curso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<jsp:include page="master.jsp" />
-
-<div class="container p-4" style="margin-top: 70px;">
+<div class="container mt-4">
     <div class="row">
-        <div class="col-md-4 mx-auto">
-            <div class="card text-center">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
                 <div class="card-header">
-                    <h3 class="text-uppercase">ACTUALIZAR CURSO</h3>
+                    <h4>Actualizar Curso</h4>
                 </div>
                 <div class="card-body">
-                    <form action="cController">
-                        <div class="input-group mt-2">
-                            <label class="input-group-text">Código:</label>
-                            <input class="form-control" type="text" name="txtCodigo" id="nomcli" placeholder="Código"
-                                   value="<%= curso.getCodigo() %>" readonly>
+                    <form action="curso" method="POST">
+                        <input type="hidden" name="accion" value="actualizar">
+                        <input type="hidden" name="id" value="${curso.id}">
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="${curso.nombre}" required>
                         </div>
 
-                        <div class="input-group mt-2">
-                            <label class="input-group-text">Nombre:</label>
-                            <input class="form-control" type="text" name="txtNombre" id="apecli" placeholder="Apellidos"
-                                   value="<%= curso.getNombre() %>" autofocus required>
+                        <div class="mb-3">
+                            <label for="creditos" class="form-label">Créditos:</label>
+                            <input type="number" class="form-control" id="creditos" name="creditos" value="${curso.creditos}" required>
                         </div>
 
-                        <div class="input-group mt-2">
-                            <label class="input-group-text">Créditos:</label>
-                            <input class="form-control" type="text" name="txtCreditos" id="txtCreditos"
-                                   value="<%= curso.getCreditos() %>" placeholder="Creditos" required>
-                        </div>
-
-                        <div class="form-group mt-4 d-grid gap-2">
-                            <input name="accion" type="hidden" value="actualizar" /><br/>
-                            <input class="btn btn-success" type="submit" value="actualizar" />
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                            <a href="curso" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </form>
                 </div>
@@ -60,6 +43,6 @@
         </div>
     </div>
 </div>
-    </body>
-<% } %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
