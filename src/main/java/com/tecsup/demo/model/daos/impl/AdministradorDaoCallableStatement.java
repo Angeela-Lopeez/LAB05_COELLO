@@ -1,5 +1,6 @@
-package com.tecsup.demo.controllers;
 
+package com.tecsup.demo.model.daos.impl;
+import com.tecsup.demo.model.daos.AdministradorDao;
 import com.tecsup.demo.model.entities.Administrador;
 import com.tecsup.demo.services.AdministradorService;
 import com.tecsup.demo.services.impl.AdministradorServiceImpl;
@@ -11,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "AdministradorController", urlPatterns = {"/sValidador", "/admin"})
-public class AdministradorController extends HttpServlet {
+public class AdministradorDaoCallableStatement extends HttpServlet implements AdministradorDao {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -36,4 +37,10 @@ public class AdministradorController extends HttpServlet {
             response.sendRedirect("error.jsp");
         }
     }
+    @Override
+    public Administrador validar(String user, String password) {
+        AdministradorService servicio = new AdministradorServiceImpl();
+        return servicio.validar(user, password);
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.tecsup.demo.model.daos.impl;
+
 import com.tecsup.demo.model.daos.AdministradorDao;
+import com.tecsup.demo.model.daos.AlumnoDao;
 import com.tecsup.demo.model.daos.CursoDao;
 import com.tecsup.demo.util.Tipo;
 
@@ -26,6 +28,19 @@ public class DaoFactory {
                 return new CursoDaoPreparedStatement();
             case CST:
                 return new CursoDaoCallableStatement();
+            default:
+                return null;
+        }
+    }
+
+    public static AlumnoDao getAlumnoDao(Tipo tipo) {
+        switch (tipo) {
+            case MEM:
+                return new AlumnoDaoMemory();
+            case PST:
+                return new AlumnoDaoPreparedStatement();
+            case CST:
+                return new AlumnoDaoCallableStatement();
             default:
                 return null;
         }
