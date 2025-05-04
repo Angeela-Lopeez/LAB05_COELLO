@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "AdministradorController", urlPatterns = {"/sValidador", "/admin"})
-public class AdministradorController extends HttpServlet {
+public class AdministradorDaoCallableStatement extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
