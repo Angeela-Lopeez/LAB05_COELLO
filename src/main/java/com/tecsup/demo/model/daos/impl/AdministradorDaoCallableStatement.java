@@ -20,6 +20,11 @@ public class AdministradorDaoCallableStatement implements AdministradorDao {
         Administrador administrador = null;
 
         try(Connection con = DBConn.getConnection()) {
+            if (con == null) {
+                System.out.println("La conexión a la base de datos falló.");
+                return null;
+            }
+
             cst = con.prepareCall("{call sp_login(?,?)}");
             cst.setString(1, user);
             cst.setString(2, password);

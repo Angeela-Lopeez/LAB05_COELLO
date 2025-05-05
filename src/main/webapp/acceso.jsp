@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 
   <!--Custom styles-->
-  <link rel="stylesheet" type="text/css" href="css/estilos.css">
+  <link rel="stylesheet" type="text/css" href="css/estilo.css">
 
 </head>
 <body>

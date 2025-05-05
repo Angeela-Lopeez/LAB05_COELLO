@@ -1,14 +1,14 @@
 package com.tecsup.demo.util;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.PropertyResourceBundle;
 
 public class DBConn {
 
-    private static String driver = null;
+    private static String driver= null;
     private static String usuario = null;
     private static String password = null;
     private static String url = null;
@@ -22,26 +22,31 @@ public class DBConn {
             usuario = properties.getString("USER");
             password = properties.getString("PASSWORD");
 
-            System.out.println("Intentando conectar a: " + url);
-            System.out.println("Usuario: " + usuario);
-            System.out.println("Password: " + password);
+            System.out.println("URL: " + url);  // Verificar URL
+            System.out.println("USER: " + usuario);  // Verificar usuario
+            System.out.println("PASSWORD: " + password);  // Verificar contraseña
+            System.out.println("DRIVER: " + driver);  // Verificar driver
 
             Class.forName(driver);
-
         } catch (IOException e) {
-            System.out.println("Error de lectura del archivo de configuración: " + e);
+            System.out.println("Error:" + e);
         } catch (ClassNotFoundException e) {
-            System.out.println("Error al cargar el driver de base de datos: " + e);
+            System.out.println("Driver no encontrado");
         }
     }
+
+
 
     public static Connection getConnection() {
-        Connection con = null;
-        try {
-            con = DriverManager.getConnection(url, usuario, password);
-        } catch (Exception e) {
-            e.printStackTrace();
+        Connection connection=null;
+        try{
+            connection = DriverManager.getConnection(url,usuario,password);
         }
-        return con;
+        catch(SQLException e){
+            //Error en base de datos no se puede lograr la conexion
+            System.out.println(Util.ERROR1+e);
+        }
+        return connection;
     }
+
 }
