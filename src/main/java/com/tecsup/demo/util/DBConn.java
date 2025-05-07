@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+
 
 public class DBConn {
 
@@ -16,7 +18,7 @@ public class DBConn {
 
     static {
         try {
-            properties = new PropertyResourceBundle(new FileInputStream(Util.RUTA));
+            ResourceBundle properties = ResourceBundle.getBundle("config");
             url = properties.getString("URL");
             driver = properties.getString("DRIVER");
             usuario = properties.getString("USER");
@@ -28,10 +30,8 @@ public class DBConn {
             System.out.println("DRIVER: " + driver);  // Verificar driver
 
             Class.forName(driver);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error:" + e);
-        } catch (ClassNotFoundException e) {
-            System.out.println("Driver no encontrado");
         }
     }
 
@@ -44,7 +44,7 @@ public class DBConn {
         }
         catch(SQLException e){
             //Error en base de datos no se puede lograr la conexion
-            System.out.println(Util.ERROR1+e);
+            System.out.println("Error al conectar a la base de datos: " + e);
         }
         return connection;
     }

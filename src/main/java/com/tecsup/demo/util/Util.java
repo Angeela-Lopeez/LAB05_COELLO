@@ -9,11 +9,12 @@ public class Util {
     public static final String ERROR2;
 
     static {
-        ResourceBundle properties = ResourceBundle.getBundle("config");
+        ResourceBundle properties = ResourceBundle.getBundle("config"); // sin extensión
         opc = Tipo.valueOf(properties.getString("opc"));
         ERROR1 = properties.getString("error1");
         ERROR2 = properties.getString("error2");
     }
 
-    public static final String RUTA = "C:\\tecsup\\Datos.ini"; // ← ESTA ES LA LÍNEA QUE FALTABA
+    // Ya no necesitas esto si no usarás Datos.ini
+    // public static final String RUTA = "C:\\tecsup\\Datos.ini";
 }
