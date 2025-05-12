@@ -46,4 +46,3 @@ public class AdministradorDaoCallableStatement implements AdministradorDao {
         return administrador;
     }
 }
-

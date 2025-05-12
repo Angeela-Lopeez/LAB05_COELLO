@@ -1,28 +1,43 @@
 <%@page import="com.tecsup.demo.model.entities.Alumno"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-  Alumno a = (Alumno) request.getAttribute("bean");
-  boolean editando = (a != null);
-%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head><title>Formulario Alumno</title></head>
+<head>
+  <title>${alumno == null ? 'Nuevo Alumno' : 'Editar Alumno'}</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
 <body>
-<h2><%= editando ? "Editar Alumno" : "Nuevo Alumno" %></h2>
-<form action="AlumnoController" method="post">
-  <input type="hidden" name="op" value="guardar"/>
-  <% if (editando) { %>
-  <input type="hidden" name="editar" value="true"/>
-  <% } %>
-  Código: <input type="text" name="codigo" value="<%= editando ? a.getCodigo() : "" %>" <%= editando ? "readonly" : "" %> /><br/>
-  Nombres: <input type="text" name="nombres" value="<%= editando ? a.getNombres() : "" %>" /><br/>
-  Apellidos: <input type="text" name="apellidos" value="<%= editando ? a.getApellidos() : "" %>" /><br/>
-  Fecha Nacimiento: <input type="date" name="fechaNac" value="<%= editando ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(a.getFechaNac()) : "" %>" /><br/>
-  Sexo:
-  <select name="sexo">
-    <option value="M" <%= editando && "M".equals(a.getSexo()) ? "selected" : "" %>>Masculino</option>
-    <option value="F" <%= editando && "F".equals(a.getSexo()) ? "selected" : "" %>>Femenino</option>
-  </select><br/>
-  <input type="submit" value="Guardar"/>
+<h2>${alumno == null ? 'Nuevo Alumno' : 'Editar Alumno'}</h2>
+<form action="alumno" method="post">
+  <input type="hidden" name="action" value="${alumno == null ? 'create' : 'update'}">
+  <c:if test="${alumno != null}">
+    <input type="hidden" name="id" value="${alumno.id}">
+  </c:if>
+
+  <div class="form-group">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" value="${alumno.nombre}" required>
+  </div>
+
+  <div class="form-group">
+    <label>Apellido:</label>
+    <input type="text" name="apellido" value="${alumno.apellido}" required>
+  </div>
+
+  <div class="form-group">
+    <label>DNI:</label>
+    <input type="text" name="dni" value="${alumno.dni}" required>
+  </div>
+
+  <div class="form-group">
+    <label>Correo:</label>
+    <input type="email" name="correo" value="${alumno.correo}" required>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="button">Guardar</button>
+    <a href="alumno?action=list" class="button">Cancelar</a>
+  </div>
 </form>
 </body>
 </html>

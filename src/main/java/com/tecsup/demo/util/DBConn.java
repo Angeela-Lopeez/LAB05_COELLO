@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 
 
 public class DBConn {
-
     private static String driver= null;
     private static String usuario = null;
     private static String password = null;
@@ -24,18 +23,16 @@ public class DBConn {
             usuario = properties.getString("USER");
             password = properties.getString("PASSWORD");
 
-            System.out.println("URL: " + url);  // Verificar URL
-            System.out.println("USER: " + usuario);  // Verificar usuario
-            System.out.println("PASSWORD: " + password);  // Verificar contraseña
-            System.out.println("DRIVER: " + driver);  // Verificar driver
+            System.out.println("URL: " + url);
+            System.out.println("USER: " + usuario);
+            System.out.println("PASSWORD: " + password);
+            System.out.println("DRIVER: " + driver);
 
             Class.forName(driver);
         } catch (Exception e) {
             System.out.println("Error:" + e);
         }
     }
-
-
 
     public static Connection getConnection() {
         Connection connection=null;

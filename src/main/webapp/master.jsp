@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="navbarScroll">
             <ul class="navbar-nav mx-auto my-2 my-lg-0 navbar-nav-scroll " style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                    <a class="nav-link  link-light" aria-current="page" href="/">Inicio</a>
+                    <a class="nav-link  link-light" aria-current="page" href="principal.jsp">Inicio</a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -48,10 +48,8 @@
                         Gestión Alumnos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Alumnos</a></li>
-                        <li><a class="dropdown-item" href="#">Apoderado</a></li>
-                    </ul>
-                </li>
+                        <li><a class="dropdown-item" href="alumnoMan.jsp">Alumnos</a></li>
+                        <li><a class="dropdown-item" href="#">Apoderado</a></li> </ul> </li>
             </ul>
 
             <form class="d-flex" role="search">

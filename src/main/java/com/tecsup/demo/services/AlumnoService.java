@@ -4,11 +4,10 @@ import com.tecsup.demo.model.entities.Alumno;
 import java.util.List;
 
 public interface AlumnoService {
-    void create(Alumno alumno) throws Exception;
-    void update(Alumno alumno) throws Exception;
-    void delete(String codigo) throws Exception;
-    Alumno find(String codigo) throws Exception;
-    List<Alumno> findAll() throws Exception;
+
+    void registrar(Alumno alumno);
+    Alumno buscar(String codigo);
+    List<Alumno> listar();
+    void actualizar(Alumno alumno);
+    void eliminar(String codigo);
 }
-
-

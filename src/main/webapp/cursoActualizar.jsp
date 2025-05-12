@@ -28,7 +28,7 @@
         <div class="col-md-4 mx-auto">
             <div class="card text-center">
                 <div class="card-header">
-                    <h3 class="text-uppercase">ACTUALIZAR CLIENTE</h3>
+                    <h3 class="text-uppercase">ACTUALIZAR CURSO</h3>
                 </div>
                 <div class="card-body">
                     <form action="cController">
