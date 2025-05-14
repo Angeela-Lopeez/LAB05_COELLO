@@ -26,7 +26,7 @@
                     <h3 class="text-uppercase">CREAR CURSO</h3>
                 </div>
                 <div class="card-body">
-                    <form action="cController">
+                    <form action="cController" method="post">
                         <div class="input-group mt-2">
                             <label  class="input-group-text">Código:</label>
                             <input class="form-control" type="text" name="txtCodigo" id="nomcli" placeholder="Código"

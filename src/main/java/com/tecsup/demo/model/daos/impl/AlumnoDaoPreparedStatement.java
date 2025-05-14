@@ -17,7 +17,8 @@ public class AlumnoDaoPreparedStatement implements AlumnoDao {
     @Override
     public void create(Alumno alumno) {
         try (Connection con = DBConn.getConnection()) {
-            pst = con.prepareStatement("INSERT INTO alumno VALUES (?, ?, ?, ?, ?)");
+            pst = con.prepareStatement("INSERT INTO alumno (chrAluCodigo, vchAluNombres, vchAluApellidos, dtmAluFechaNac, chrAluSexo)" +
+                    " VALUES (?, ?, ?, ?, ?)");
             pst.setString(1, alumno.getCodigo());
             pst.setString(2, alumno.getNombres());
             pst.setString(3, alumno.getApellidos());

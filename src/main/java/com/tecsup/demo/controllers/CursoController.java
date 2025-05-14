@@ -31,6 +31,25 @@ public class CursoController extends HttpServlet {
             case "eliminar": servicio.borrar(curso.getCodigo());break;
         }
         response.sendRedirect("cursoMan.jsp");
+    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+        CursoService servicio = new CursoServiceImpl();
+
+        if ("insertar".equals(accion)) {
+            Curso curso = new Curso();
+            curso.setCodigo(request.getParameter("txtCodigo"));
+            curso.setNombre(request.getParameter("txtNombre"));
+            curso.setCreditos(Integer.parseInt(request.getParameter("txtCreditos")));
+
+            System.out.println("Insertando: " + curso);
+            servicio.grabar(curso);
+        }
+
+        response.sendRedirect("cursoMan.jsp");
+
     }}
 
 

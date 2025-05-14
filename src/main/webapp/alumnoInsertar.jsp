@@ -1,5 +1,5 @@
 <%@ page import="com.tecsup.demo.model.entities.Administrador" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <%
@@ -7,11 +7,10 @@
     if(misesion.getAttribute("eladministrador")==null){
         response.sendRedirect("error.jsp");
     } else {
-        Administrador adm = (Administrador) misesion.getAttribute("eladministrador");
-        String nombre = adm.getNombres() + " " + adm.getApellidos();
+        Administrador adm = (Administrador)misesion.getAttribute("eladministrador");
 %>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <title>Nuevo Alumno</title>
 </head>
 <body>
@@ -25,22 +24,34 @@
                     <h3 class="text-uppercase">CREAR ALUMNO</h3>
                 </div>
                 <div class="card-body">
-                    <form action="AlumnoController">
+                    <form action="AlumnoController" method="post">
                         <div class="input-group mt-2">
-                            <label class="input-group-text">Código:</label>
-                            <input class="form-control" type="text" name="txtCodigo" required autofocus>
+                            <label class="input-group-text">Código</label>
+                            <input class="form-control" type="text" name="txtcodigo" required>
                         </div>
                         <div class="input-group mt-2">
-                            <label class="input-group-text">Nombres:</label>
+                            <label class="input-group-text">Nombres</label>
                             <input class="form-control" type="text" name="txtNombres" required>
                         </div>
                         <div class="input-group mt-2">
-                            <label class="input-group-text">Apellidos:</label>
+                            <label class="input-group-text">Apellidos</label>
                             <input class="form-control" type="text" name="txtApellidos" required>
                         </div>
+                        <div class="input-group mt-2">
+                            <label class="input-group-text">Fecha Nacimiento</label>
+                            <input class="form-control" type="date" name="txtFechaNacimiento" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <label class="input-group-text">Sexo</label>
+                            <select class="form-control" name="txtSexo" required>
+                                <option value="">Seleccione</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+                        </div>
                         <div class="form-group mt-4 d-grid gap-2">
-                            <input name="accion" type="hidden" value="insertar"/>
-                            <input class="btn btn-success" type="submit" value="Insertar"/>
+                            <input type="hidden" name="accion" value="insertar">
+                            <input class="btn btn-success" type="submit" value="Insertar">
                         </div>
                     </form>
                 </div>
@@ -48,6 +59,6 @@
         </div>
     </div>
 </div>
-<% } %>
 </body>
+<% } %>
 </html>

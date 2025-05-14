@@ -31,18 +31,31 @@
           <h3 class="text-uppercase">ELIMINAR ALUMNO</h3>
         </div>
         <div class="card-body">
-          <form action="AlumnoController">
+          <form action="AlumnoController" method="get">
             <div class="input-group mt-2">
               <label class="input-group-text">Código:</label>
-              <input class="form-control" type="text" name="txtCodigo" value="<%=alumno.getCodigo()%>" readonly>
+              <input class="form-control" type="text" name="txtcodigo"
+                     value="<%=alumno.getCodigo()%>" readonly>
             </div>
             <div class="input-group mt-2">
               <label class="input-group-text">Nombres:</label>
-              <input class="form-control" type="text" name="txtNombres" value="<%=alumno.getNombres()%>" readonly>
+              <input class="form-control" type="text" name="txtNombres"
+                     value="<%=alumno.getNombres()%>" readonly>
             </div>
             <div class="input-group mt-2">
               <label class="input-group-text">Apellidos:</label>
-              <input class="form-control" type="text" name="txtApellidos" value="<%=alumno.getApellidos()%>" readonly>
+              <input class="form-control" type="text" name="txtApellidos"
+                     value="<%=alumno.getApellidos()%>" readonly>
+            </div>
+            <div class="input-group mt-2">
+              <label class="input-group-text">Fecha de Nac.:</label>
+              <input class="form-control" type="text" name="txtFechaNac"
+                     value="<%=alumno.getFechaNacimiento()%>" readonly>
+            </div>
+            <div class="input-group mt-2">
+              <label class="input-group-text">Sexo:</label>
+              <input class="form-control" type="text" name="txtSexo"
+                     value="<%=alumno.getSexo()%>" readonly>
             </div>
             <div class="form-group mt-4 d-grid gap-2">
               <input name="accion" type="hidden" value="eliminar"/>

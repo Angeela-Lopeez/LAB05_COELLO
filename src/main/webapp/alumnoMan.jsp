@@ -2,7 +2,7 @@
 <%@ page import="com.tecsup.demo.services.AlumnoService" %>
 <%@ page import="com.tecsup.demo.services.impl.AlumnoServiceImpl" %>
 <%@ page import="com.tecsup.demo.model.entities.Alumno" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <%
@@ -15,8 +15,8 @@
         AlumnoService servicio = new AlumnoServiceImpl();
 %>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Mantenimiento de Alumnos - <%=nombre%></title>
+    <meta charset="UTF-8">
+    <title>Mantenimiento de Alumnos - <%=nombre %></title>
 </head>
 <body>
 <jsp:include page="master.jsp" />
@@ -24,31 +24,32 @@
 <div class="container" style="margin-top:70px;">
     <h1>Mantenimiento de Alumnos</h1>
     <div style="padding: 10px;">
-        <button class="btn btn-primary">
-            <a class="nav-link link-light" href="alumnoInsertar.jsp">Nuevo Alumno</a>
-        </button>
+        <a href="alumnoInsertar.jsp" class="btn btn-danger">Nuevo Alumno</a>
     </div>
-
     <table class="table table-dark table-hover">
         <tr align="center">
             <th>CODIGO</th>
             <th>NOMBRES</th>
             <th>APELLIDOS</th>
+            <th>FECHA NACIMIENTO</th>
+            <th>SEXO</th>
             <th>ACCIONES</th>
         </tr>
-        <% for (Alumno alumno : servicio.listar()) { %>
+        <% for (Alumno a : servicio.listar()) { %>
         <tr>
-            <td><%=alumno.getCodigo()%></td>
-            <td><%=alumno.getNombres()%></td>
-            <td><%=alumno.getApellidos()%></td>
+            <td><%=a.getCodigo() %></td>
+            <td><%=a.getNombres() %></td>
+            <td><%=a.getApellidos() %></td>
+            <td><%=a.getFechaNacimiento() %></td>
+            <td><%=a.getSexo() %></td>
             <td>
-                <a class="btn btn-warning" href="alumnoEliminar.jsp?id=<%=alumno.getCodigo()%>">Eliminar</a>
-                <a class="btn btn-danger" href="alumnoActualizar.jsp?id=<%=alumno.getCodigo()%>">Actualizar</a>
+                <a class="btn btn-warning" href="alumnoEliminar.jsp?id=<%=a.getCodigo()%>">Eliminar</a>
+                <a class="btn btn-danger" href="alumnoActualizar.jsp?id=<%=a.getCodigo()%>">Actualizar</a>
             </td>
         </tr>
         <% } %>
     </table>
 </div>
-<% } %>
 </body>
+<% } %>
 </html>

@@ -31,18 +31,34 @@
                     <h3 class="text-uppercase">ACTUALIZAR ALUMNO</h3>
                 </div>
                 <div class="card-body">
-                    <form action="AlumnoController">
+                    <form action="AlumnoController" method="post">
                         <div class="input-group mt-2">
                             <label class="input-group-text">Código:</label>
-                            <input class="form-control" type="text" name="txtCodigo" value="<%=alumno.getCodigo()%>" readonly>
+                            <input class="form-control" type="text" name="txtcodigo"
+                                   value="<%=alumno.getCodigo()%>" required>
                         </div>
                         <div class="input-group mt-2">
                             <label class="input-group-text">Nombres:</label>
-                            <input class="form-control" type="text" name="txtNombres" value="<%=alumno.getNombres()%>" required>
+                            <input class="form-control" type="text" name="txtNombres"
+                                   value="<%=alumno.getNombres()%>" required>
                         </div>
                         <div class="input-group mt-2">
                             <label class="input-group-text">Apellidos:</label>
-                            <input class="form-control" type="text" name="txtApellidos" value="<%=alumno.getApellidos()%>" required>
+                            <input class="form-control" type="text" name="txtApellidos"
+                                   value="<%=alumno.getApellidos()%>" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <label class="input-group-text">Fecha de Nacimiento:</label>
+                            <input class="form-control" type="date" name="txtFechaNacimiento"
+                                   value="<%=alumno.getFechaNacimiento()%>" required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <label class="input-group-text">Sexo:</label>
+                            <select class="form-control" name="txtSexo" required>
+                                <option value="" <%= alumno.getSexo().isEmpty() ? "selected" : "" %>>Seleccione</option>
+                                <option value="M" <%= "M".equals(alumno.getSexo()) ? "selected" : "" %>>Masculino</option>
+                                <option value="F" <%= "F".equals(alumno.getSexo()) ? "selected" : "" %>>Femenino</option>
+                            </select>
                         </div>
                         <div class="form-group mt-4 d-grid gap-2">
                             <input name="accion" type="hidden" value="actualizar"/>
